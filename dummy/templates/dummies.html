@@ -1,0 +1,102 @@
+{% load static %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/dataTables.semanticui.min.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'dummy/main.css' %}" />
+</head>
+
+<body>
+
+<div class="ui grid">
+<div class="four wide column">
+    <div class="ui fluid multiple search selection dropdown" id="image_filter">
+      <input type="hidden" name="user">
+      <i class="dropdown icon"></i>
+      <div class="default text">Filter by image</div>
+      <div class="menu">
+        <div class="item" data-value="man-beard-skin-face-avatar-64">
+          <img class="ui mini avatar image" src="/media/upload/related/man-beard-skin-face-avatar-64.png">
+          Beard man
+        </div>
+        <div class="item" data-value="romantic-face-man-avatar-round-64">
+          <img class="ui mini avatar image" src="/media/upload/related/romantic-face-man-avatar-round-64.png">
+          Man
+        </div>
+        <div class="item" data-value="round-man-face-old-person-64">
+          <img class="ui mini avatar image" src="/media/upload/related/round-man-face-old-person-64.png">
+          Old person
+        </div>
+        <div class="item" data-value="old-pirate-man-face-round-avatar-64">
+          <img class="ui mini avatar image" src="/media/upload/related/old-pirate-man-face-round-avatar-64.png">
+          Pirate
+        </div>
+        <div class="item" data-value="man-classic-head-face-avatar-round-64">
+          <img class="ui mini avatar image" src="/media/upload/related/man-classic-head-face-avatar-round-64.png">
+          Classic
+        </div>
+        <div class="item" data-value="everything-with-a">
+          <img class="ui mini avatar image" src="/media/upload/related/12580-letter-a-inside-a-circle5.png">
+          Everything with A
+        </div>
+        <div class="item" data-value="everything-with-a">
+          <img class="ui mini avatar image" src="/media/upload/related/12605-f-inside-a-circle1.png">
+          Everything with F
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+
+<table id="example" class="ui celled striped selectable table" cellspacing="0" width="100%">
+    <thead class="blue-header">
+        <tr>
+            <th class="one wide">Logo</th>
+            <th class="three wide">Char field</th>
+            <th class="two wide">Csv integers</th>
+            <th class="four wide">Textfield</th>
+            <th class="three wide">Csv chars</th>
+            <th class="three wide">Images</th>
+        </tr>
+    </thead>
+    <tfoot class="blue-header">
+        <tr>
+            <th>Logo</th>
+            <th>Char field</th>
+            <th>Csv integers</th>
+            <th>Textfield</th>
+            <th>Csv chars</th>
+            <th>Images</th>
+        </tr>
+    </tfoot>
+    <tbody>
+        {% for item in qs %}
+        <tr>
+            <td class="middle aligned"><img src="{{item.logo.url}}" class="logo"></td>
+            <td> {{item.char_field}} </td>
+            <td> {{item.csv_integers}} </td>
+            <td> {{item.text_field|truncatewords:10|slice:"-4" }}... </td>
+            <td>
+                <ul> 
+                    {% for csv_char in item.csv_chars.all %}
+                    <li style="color: #4676d3;"> {{csv_char.char_field}}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                {% for image in item.images.all %}
+                <img class="ui mini avatar image" src="{{image.img.url}}" style="width: 3em;" alt="{{image.img.name}}">
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/dataTables.semanticui.min.js"></script>
+<script type="text/javascript" src="{% static 'dummy/main.js' %}"></script>
+
+</body>

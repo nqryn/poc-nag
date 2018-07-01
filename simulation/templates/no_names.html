@@ -1,0 +1,85 @@
+{% load static %}
+
+<head>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css" />
+  <link rel="stylesheet" type="text/css" href="{% static 'simulation/main.css' %}" />
+</head>
+
+<body>
+
+<div class="header" style="background-image: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url('{% static "simulation/find_assets.png"%}')" id="big">
+  <span>Find Assets</span>
+</div>
+
+
+<div id="inner">
+<div class="ui four cards">
+{% for item in qs %}
+  <div class="ui card">
+    <div class="content">
+      <div class="header">{{ item.customer.name }} 
+        <img class="right floated mini ui image" src="http://localhost:8000/media/{{ item.customer.logo }}">
+      </div>
+    </div>
+        <div class="content visible">
+          <h4 class="ui sub header">{{ item.customer.name }} &nbsp; &nbsp; <i class="{{ item.country }} flag"></i></h4>
+          <br/>
+          <div>
+            <span><b>Industry:</b></span>
+            <span>{{item.industry}}</span>
+          </div>
+
+          <br/>
+          <div>
+            <span><b>Use cases:</b></span>
+            <span>{{item.use_cases|truncatechars:20}}</span>
+            <span class="right floated">
+              {% if item.use_cases|length > 20 %}
+              <a href="#" class="more">more</a>
+              {% endif %}
+            </span>
+          </div>
+
+          <br/>
+          <div style="">
+            <span><b>Clouds:</b></span>
+            {% for cloud in item.clouds.all %}
+              <img class="ui avatar mini image" src="http://localhost:8000/media/{{ cloud.icon }}" style="vertical-align: text-bottom;">
+            {% endfor %}
+          </div>
+        </div> 
+
+        <div class="content hidden">
+          <h4 class="ui sub header">{{ item.customer.name }} &nbsp; &nbsp; <i class="{{ item.country }} flag"></i></h4>
+            <br/>
+          <div>
+            <span><b>Use cases:</b></span>
+            <span>{{item.use_cases}}</span>
+            <span class="right floated">
+              <a href="#" class="less">less</a>
+            </span>
+          </div>
+        </div>
+
+      <div class="extra content">
+        <span><b>Assets:</b></span>
+          <span>
+          {% for asset in item.assets.all %}
+            <a href="{{ asset.link }}"> {{ asset.name }} </a>
+            {% if not forloop.last %}
+            &nbsp;&#151;&nbsp;
+            {% endif %}
+          {% endfor %}
+          </span>
+      </div>
+
+  </div>
+{% endfor %}
+</div>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.js"></script>
+<script type="text/javascript" src="{% static 'simulation/main.js' %}"></script>
+
+</body>
